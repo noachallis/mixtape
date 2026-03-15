@@ -7,7 +7,7 @@ interface CassetteTapeProps {
 
 export default function CassetteTape({
   spinning = false,
-  label = "MIXTAPE",
+  label = "mixtape",
   sublabel = "SIDE A",
   className = "",
 }: CassetteTapeProps) {
@@ -17,89 +17,127 @@ export default function CassetteTape({
     animation: spinning ? `spin-slow ${duration} linear infinite` : "none",
   });
 
+  const isSideB = sublabel.includes("B");
+
   return (
     <svg
-      viewBox="0 0 320 200"
+      viewBox="0 0 320 205"
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Body */}
+      {/* ── Body ── */}
       <rect
-        x="1" y="1" width="318" height="198"
-        rx="9"
-        fill="#dddcea"
-        stroke="#3333cc"
-        strokeWidth="1.5"
+        x="2" y="2" width="316" height="201" rx="13"
+        fill="#3333cc" stroke="#1a1935" strokeWidth="2.5"
       />
 
-      {/* Corner screws */}
+      {/* ── Corner screw marks ── */}
       {([
-        [18, 18], [302, 18], [18, 182], [302, 182],
+        [20, 20], [300, 20], [20, 185], [300, 185],
       ] as [number, number][]).map(([cx, cy], i) => (
         <g key={i}>
-          <circle cx={cx} cy={cy} r="7" fill="#e8e7f0" stroke="#b8b8cc" strokeWidth="0.75" />
-          <line x1={cx - 3.5} y1={cy} x2={cx + 3.5} y2={cy} stroke="#b8b8cc" strokeWidth="0.75" />
-          <line x1={cx} y1={cy - 3.5} x2={cx} y2={cy + 3.5} stroke="#b8b8cc" strokeWidth="0.75" />
+          <circle cx={cx} cy={cy} r="8.5" fill="#2828bb" stroke="#1a1935" strokeWidth="1.5" />
+          <line x1={cx - 4.5} y1={cy - 4.5} x2={cx + 4.5} y2={cy + 4.5} stroke="#1a1935" strokeWidth="1.5" />
+          <line x1={cx + 4.5} y1={cy - 4.5} x2={cx - 4.5} y2={cy + 4.5} stroke="#1a1935" strokeWidth="1.5" />
         </g>
       ))}
 
-      {/* Window */}
-      <rect x="56" y="26" width="208" height="112" rx="5" fill="#d0cfe0" />
+      {/* ── Main label ── */}
+      <rect
+        x="20" y="13" width="280" height="128" rx="18"
+        fill="#f0eff8" stroke="#1a1935" strokeWidth="2.5"
+      />
 
-      {/* Left reel */}
-      <g transform="translate(114, 79)" style={reelStyle("3.2s")}>
-        <circle r="38" fill="#c8c7d8" stroke="#b8b8cc" strokeWidth="0.75" />
-        <line x1="0" y1="-38" x2="0" y2="-16" stroke="#9090a8" strokeWidth="1.5" />
-        <line x1="32.9" y1="19" x2="13.9" y2="8" stroke="#9090a8" strokeWidth="1.5" />
-        <line x1="-32.9" y1="19" x2="-13.9" y2="8" stroke="#9090a8" strokeWidth="1.5" />
-        <circle r="16" fill="#d8d7e8" stroke="#c0bfd0" strokeWidth="0.75" />
-        <circle r="5" fill="#dddcea" />
-      </g>
-
-      {/* Right reel */}
-      <g transform="translate(206, 79)" style={reelStyle("4.1s")}>
-        <circle r="38" fill="#c8c7d8" stroke="#b8b8cc" strokeWidth="0.75" />
-        <line x1="0" y1="-38" x2="0" y2="-16" stroke="#9090a8" strokeWidth="1.5" />
-        <line x1="32.9" y1="19" x2="13.9" y2="8" stroke="#9090a8" strokeWidth="1.5" />
-        <line x1="-32.9" y1="19" x2="-13.9" y2="8" stroke="#9090a8" strokeWidth="1.5" />
-        <circle r="16" fill="#d8d7e8" stroke="#c0bfd0" strokeWidth="0.75" />
-        <circle r="5" fill="#dddcea" />
-      </g>
-
-      {/* Tape path — bottom of window */}
-      <rect x="56" y="127" width="208" height="11" fill="#d0cfe0" />
-      <circle cx="84" cy="132" r="5.5" fill="#c8c7d8" stroke="#b8b8cc" strokeWidth="0.75" />
-      <circle cx="236" cy="132" r="5.5" fill="#c8c7d8" stroke="#b8b8cc" strokeWidth="0.75" />
-      <rect x="90" y="130" width="140" height="4" rx="1" fill="#b8b8cc" />
-
-      {/* Label */}
-      <rect x="70" y="150" width="180" height="38" rx="3" fill="#3333cc" />
+      {/* ── Label text ── */}
       <text
-        x="160" y="165"
+        x="148" y="52"
         textAnchor="middle"
-        fill="#f0eff8"
+        fill="#1a1935"
+        fontFamily="Caveat, cursive"
+        fontSize="30"
+        fontWeight="600"
+      >
+        {label.toLowerCase()}
+      </text>
+
+      {/* ── Heart ── */}
+      <path
+        d="M 276 32 C 276 28 271 24 266 28 C 261 24 256 28 256 32 C 256 38 266 46 266 46 C 266 46 276 38 276 32 Z"
+        fill="#3333cc"
+      />
+
+      {/* ── Reel housing oval ── */}
+      <rect
+        x="40" y="72" width="240" height="62" rx="31"
+        fill="#e0dff0" stroke="#1a1935" strokeWidth="2"
+      />
+
+      {/* ── Tape window ── */}
+      <rect
+        x="118" y="88" width="84" height="28" rx="3"
+        fill="#1a1935"
+      />
+      {/* tape sheen */}
+      <rect
+        x="124" y="92" width="30" height="8" rx="2"
+        fill="#f0eff8" opacity="0.25"
+      />
+
+      {/* ── Left reel ── */}
+      <g transform="translate(93, 103)" style={reelStyle("3.2s")}>
+        <circle r="26" fill="#ffffff" stroke="#1a1935" strokeWidth="2" />
+        {/* 6 spokes */}
+        <line x1="0"     y1="-26"  x2="0"     y2="-9"  stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="22.5"  y1="-13"  x2="7.8"   y2="-4.5" stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="22.5"  y1="13"   x2="7.8"   y2="4.5"  stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="0"     y1="26"   x2="0"     y2="9"   stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="-22.5" y1="13"   x2="-7.8"  y2="4.5"  stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="-22.5" y1="-13"  x2="-7.8"  y2="-4.5" stroke="#1a1935" strokeWidth="1.5" />
+        {/* Hub */}
+        <circle r="9" fill="#1a1935" />
+        <circle r="3.5" fill="#ffffff" />
+      </g>
+
+      {/* ── Right reel ── */}
+      <g transform="translate(227, 103)" style={reelStyle("4.1s")}>
+        <circle r="26" fill="#ffffff" stroke="#1a1935" strokeWidth="2" />
+        <line x1="0"     y1="-26"  x2="0"     y2="-9"  stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="22.5"  y1="-13"  x2="7.8"   y2="-4.5" stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="22.5"  y1="13"   x2="7.8"   y2="4.5"  stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="0"     y1="26"   x2="0"     y2="9"   stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="-22.5" y1="13"   x2="-7.8"  y2="4.5"  stroke="#1a1935" strokeWidth="1.5" />
+        <line x1="-22.5" y1="-13"  x2="-7.8"  y2="-4.5" stroke="#1a1935" strokeWidth="1.5" />
+        <circle r="9" fill="#1a1935" />
+        <circle r="3.5" fill="#ffffff" />
+      </g>
+
+      {/* ── Bottom section ── */}
+
+      {/* Side A / B label */}
+      <rect
+        x="26" y="151" width="30" height="20" rx="4"
+        fill="#f0eff8" stroke="#1a1935" strokeWidth="1.5"
+      />
+      <text
+        x="41" y="165"
+        textAnchor="middle"
+        fill="#1a1935"
         fontFamily="'Courier Prime', Courier, monospace"
         fontSize="11"
         fontWeight="700"
-        letterSpacing="5"
       >
-        {label.toUpperCase()}
-      </text>
-      <text
-        x="160" y="180"
-        textAnchor="middle"
-        fill="#a0a0e8"
-        fontFamily="'Courier Prime', Courier, monospace"
-        fontSize="7"
-        letterSpacing="3"
-      >
-        {sublabel.toUpperCase()}
+        {isSideB ? "B" : "A"}
       </text>
 
-      {/* Bottom guide holes */}
-      <circle cx="110" cy="194" r="4.5" fill="#d0cfe0" />
-      <circle cx="160" cy="194" r="4.5" fill="#d0cfe0" />
-      <circle cx="210" cy="194" r="4.5" fill="#d0cfe0" />
+      {/* Guide slots (3 oval holes) */}
+      <ellipse cx="112" cy="165" rx="17" ry="10" fill="#2828bb" stroke="#1a1935" strokeWidth="1.5" />
+      <ellipse cx="160" cy="165" rx="17" ry="10" fill="#2828bb" stroke="#1a1935" strokeWidth="1.5" />
+      <ellipse cx="208" cy="165" rx="17" ry="10" fill="#2828bb" stroke="#1a1935" strokeWidth="1.5" />
+
+      {/* Connector pin holes */}
+      <circle cx="112" cy="191" r="5.5" fill="#1a1935" />
+      <circle cx="160" cy="191" r="5.5" fill="#1a1935" />
+      <circle cx="208" cy="191" r="5.5" fill="#1a1935" />
     </svg>
   );
 }

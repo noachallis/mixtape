@@ -1,20 +1,13 @@
-"use client";
-
-import { signIn } from "next-auth/react";
 import CassetteTape from "@/components/ui/CassetteTape";
+import { signInWithSpotify } from "@/lib/actions";
 
 export default function SignInPage() {
   return (
     <main className="min-h-dvh flex flex-col items-center justify-center px-6 py-12 text-center">
-      {/* Spinning cassette */}
-      <div
-        className="animate-wow-in w-48 sm:w-56 mb-8"
-        style={{ animationDelay: "0ms" }}
-      >
+      <div className="w-48 sm:w-56 mb-8 animate-wow-in" style={{ animationDelay: "0ms" }}>
         <CassetteTape spinning />
       </div>
 
-      {/* Wordmark */}
       <p
         className="animate-wow-in font-hand text-tape-amber text-2xl mb-3"
         style={{ animationDelay: "100ms" }}
@@ -38,14 +31,19 @@ export default function SignInPage() {
         Sign in with Spotify to start building your mixtape.
       </p>
 
-      <button
-        onClick={() => signIn("spotify", { callbackUrl: "/dedicate" })}
-        className="animate-wow-in inline-flex items-center gap-3 bg-[#1DB954] hover:bg-[#1aa34a] active:bg-[#158a3e] text-white font-display text-base px-7 py-3.5 rounded-full transition-colors duration-200"
+      <form
+        action={signInWithSpotify}
+        className="animate-wow-in"
         style={{ animationDelay: "280ms" }}
       >
-        <SpotifyIcon />
-        Continue with Spotify
-      </button>
+        <button
+          type="submit"
+          className="inline-flex items-center gap-3 bg-[#1DB954] hover:bg-[#1aa34a] active:bg-[#158a3e] text-white font-display text-base px-7 py-3.5 rounded-full transition-colors duration-200"
+        >
+          <SpotifyIcon />
+          Continue with Spotify
+        </button>
+      </form>
 
       <p
         className="animate-wow-in font-body text-tape-muted text-xs mt-6 max-w-xs leading-relaxed"

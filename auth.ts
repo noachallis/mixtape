@@ -12,11 +12,12 @@ const SPOTIFY_SCOPES = [
 ].join(" ");
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     Spotify({
-      authorization: {
-        params: { scope: SPOTIFY_SCOPES },
-      },
+      clientId: process.env.SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      authorization: `https://accounts.spotify.com/authorize?scope=${encodeURIComponent(SPOTIFY_SCOPES)}`,
     }),
   ],
   callbacks: {
