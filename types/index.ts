@@ -23,6 +23,7 @@ export interface Mixtape {
   linerNote?: string;
   coverImageUrl?: string;
   coverPrompt?: string;
+  spotifyPlaylistUrl?: string;
   tracks: Track[];
   shareSlug: string;
   createdAt: string;

@@ -37,6 +37,7 @@ export function fromSupabase(data: Record<string, any>): Mixtape {
     linerNote: data.liner_note ?? undefined,
     coverImageUrl: data.cover_image_url ?? undefined,
     coverPrompt: data.cover_prompt ?? undefined,
+    spotifyPlaylistUrl: data.spotify_playlist_url ?? undefined,
     shareSlug: data.share_slug,
     createdAt: data.created_at,
     updatedAt: data.updated_at,

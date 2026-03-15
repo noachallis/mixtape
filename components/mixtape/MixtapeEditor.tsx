@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import Image from "next/image";
+import CoverArtSection from "./CoverArtSection";
 import {
   DndContext,
   DragEndEvent,
@@ -259,6 +260,10 @@ export default function MixtapeEditor({ mixtape }: { mixtape: Mixtape }) {
     "idle"
   );
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [playlistUrl, setPlaylistUrl] = useState(
+    mixtape.spotifyPlaylistUrl ?? ""
+  );
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sideA = tracks.filter((t) => t.side === "A");
@@ -341,6 +346,25 @@ export default function MixtapeEditor({ mixtape }: { mixtape: Mixtape }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ linerNote }),
     });
+  }
+
+  // ── Spotify export ───────────────────────────────────────────────────────
+
+  async function exportToSpotify() {
+    if (playlistUrl) {
+      window.open(playlistUrl, "_blank");
+      return;
+    }
+    setExporting(true);
+    try {
+      const res = await fetch(`/api/mixtapes/${mixtape.id}/export`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (res.ok) setPlaylistUrl(data.playlistUrl);
+    } finally {
+      setExporting(false);
+    }
   }
 
   // ── Copy share link ──────────────────────────────────────────────────────
@@ -430,6 +454,15 @@ export default function MixtapeEditor({ mixtape }: { mixtape: Mixtape }) {
           </p>
         </section>
 
+        {/* Cover art */}
+        <CoverArtSection
+          mixtapeId={mixtape.id}
+          initialImageUrl={mixtape.coverImageUrl}
+          initialPrompt={mixtape.coverPrompt}
+          emotionalBrief={mixtape.emotionalBrief}
+          recipientName={mixtape.recipientName}
+        />
+
         {/* Actions */}
         <section className="flex flex-col sm:flex-row gap-3 pb-16">
           <button
@@ -439,11 +472,15 @@ export default function MixtapeEditor({ mixtape }: { mixtape: Mixtape }) {
             {copied ? "Link copied ✓" : "Copy share link"}
           </button>
           <button
-            disabled
-            title="Coming soon"
-            className="flex-1 flex items-center justify-center gap-2 bg-tape-brown text-tape-muted font-display text-base px-6 py-3.5 rounded-full cursor-not-allowed"
+            onClick={exportToSpotify}
+            disabled={exporting}
+            className="flex-1 flex items-center justify-center gap-2 bg-[#1DB954] hover:bg-[#1aa34a] disabled:opacity-60 disabled:cursor-not-allowed text-white font-display text-base px-6 py-3.5 rounded-full transition-colors duration-200"
           >
-            Save to Spotify
+            {exporting
+              ? "Saving…"
+              : playlistUrl
+              ? "Open in Spotify ↗"
+              : "Save to Spotify"}
           </button>
         </section>
       </main>
